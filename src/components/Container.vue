@@ -24,6 +24,7 @@ export default {
             projects: {},
             projectData: [],
             projectNames: [],
+            projectID: 0,
         };
     },    
     methods: {
@@ -41,27 +42,28 @@ export default {
                     return modal.style.display = "none";
                 
                 case 'save':              
-                    if (this.projectNames.includes(project.trim().toLowerCase())) {
-                        return alert('There is already project with this name');   
-                    }
+                    !project ? alert('Input project name') :
+                    this.projectNames.push(project.trim().toLowerCase());
 
-                !project ? alert('Input project name') :
-                this.projectNames.push(project.trim().toLowerCase());
-                this.createElement(project)
-                return modal.style.display = "none";
+                    this.createElement(project)
+                    return modal.style.display = "none";   
             }        
         },
-        createElement: function (projName) {         
+        createElement: function (projName) {   
+            const that = this;      
             const projectContainer = this.projectData;
 
-            this.nameConstr(projName,this.projects);
+            this.nameConstr(projName,this.projects, that);
 
-            let copyObj = Object.assign({},this.projects)
+            let copyObj = Object.assign({},this.projects);
 
-            projectContainer.unshift(copyObj);       
+            projectContainer.unshift(copyObj);  
+            
+            console.log(projectContainer);
         },
-        nameConstr: (projectName, mainObj) => {
-
+        nameConstr: (projectName, mainObj, context) => {
+            
+            mainObj.id = ++context.projectID;
             mainObj.project = projectName;
             mainObj.topic = [];
             mainObj.info = [];
