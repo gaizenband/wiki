@@ -7,10 +7,12 @@
 </template>
 
 <script>
-import AddButton from './AddButton'
-import DialogNewProj from './DialogNewProj'
-import ProjectBar from './ProjectBar'
+import AddButton from './AddButton';
+import DialogNewProj from './DialogNewProj';
+import ProjectBar from './ProjectBar';
+import { mapActions } from 'vuex';
 
+const actions = ['saveProject'];
 
 export default {
   name: 'Container',
@@ -28,6 +30,7 @@ export default {
         };
     },    
     methods: {
+        ...mapActions(actions),
         dialogWindow(event, project) {  
             let vNode = this._vnode.children;
 
@@ -43,8 +46,6 @@ export default {
                 
                 case 'save':              
                     !project ? alert('Input project name') :
-                    this.projectNames.push(project.trim().toLowerCase());
-
                     this.createElement(project)
                     return modal.style.display = "none";   
             }        
@@ -57,17 +58,16 @@ export default {
 
             let copyObj = Object.assign({},this.projects);
 
-            projectContainer.unshift(copyObj);  
+            projectContainer.unshift(copyObj);
             
-            console.log(projectContainer);
+            this.saveProject;
         },
         nameConstr: (projectName, mainObj, context) => {
             
             mainObj.id = ++context.projectID;
             mainObj.project = projectName;
-            mainObj.topic = [];
-            mainObj.info = [];
-        }
+            mainObj.data = [];
+        },
     }
 }
 </script>

@@ -3,7 +3,12 @@
             <h5 class="card-header text-center">
                 {{ProjectName}}
             </h5>
-            <div class="card-body  d-flex justify-content-around">
+            <div class="card-body  d-flex justify-content-around flex-column">
+                <div class="subject" v-for="(project, index) in projectData.data" :key='index'>
+                    <div class="topic mb-5" ></div>
+                    <div class="info"></div>
+                </div>
+                <button class="card-body btn btn-primary p-3" style="width: 30%">Add</button>
             </div>
             <div class="card-body  d-flex justify-content-around bg-light" style="padding: 12px;">
                 <a href="#" ><i class="fa fa-pen fa-2x"></i></a>
@@ -13,9 +18,16 @@
 </template>
 
 <script>
+
+
 export default {
   name: 'ProjectBar',
-  props: ['ProjectName']
+  props: ['ProjectName'],
+  data: function() {
+        return {
+            projectData: [],
+        };
+    },
 }
 </script>
 
