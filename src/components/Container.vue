@@ -40,13 +40,10 @@ export default {
                 case 'close':
                     return modal.style.display = "none";
                 
-                case 'save':                                     
-                    this.projectNames.forEach((curr) => {
-                        
-                        if (curr.trim().toLowerCase() == project.trim().toLowerCase()) {
-                            return alert('There is already project with this name');
-                        }                      
-                    });
+                case 'save':              
+                    if (this.projectNames.includes(project.trim().toLowerCase())) {
+                        return alert('There is already project with this name');   
+                    }
 
                 !project ? alert('Input project name') :
                 this.projectNames.push(project.trim().toLowerCase());
@@ -61,12 +58,7 @@ export default {
 
             let copyObj = Object.assign({},this.projects)
 
-            projectContainer.unshift(copyObj);
-
-            for (let key in projectContainer) {
-                console.log(key);
-                console.log(projectContainer[key]);
-            }           
+            projectContainer.unshift(copyObj);       
         },
         nameConstr: (projectName, mainObj) => {
 

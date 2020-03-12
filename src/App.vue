@@ -16,6 +16,8 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+//Block of fontawesome import
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
 
