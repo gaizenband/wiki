@@ -10,9 +10,10 @@
 import AddButton from './AddButton';
 import DialogNewProj from './DialogNewProj';
 import ProjectBar from './ProjectBar';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 const actions = ['saveProject'];
+const getters = ['projectData'];
 
 export default {
   name: 'Container',
@@ -23,12 +24,13 @@ export default {
     },
     data: function() {
         return {
-            projects: {},
-            projectData: [],
-            projectNames: [],
             projectID: 0,
+            project: {},
         };
-    },    
+    },
+    computed: {
+      ...mapGetters(getters),
+    },
     methods: {
         ...mapActions(actions),
         dialogWindow(event, project) {  
@@ -46,25 +48,19 @@ export default {
                 
                 case 'save':              
                     !project ? alert('Input project name') :
-                    this.createElement(project)
+                    this.createElement(project);
                     return modal.style.display = "none";   
             }        
         },
-        createElement: function (projName) {   
-            const that = this;      
-            const projectContainer = this.projectData;
+        createElement: function (projName) {
 
-            this.nameConstr(projName,this.projects, that);
+            this.nameConstr(projName, this.project);
+            let copyObj = Object.assign({},this.project);
 
-            let copyObj = Object.assign({},this.projects);
-
-            projectContainer.unshift(copyObj);
-            
-            this.saveProject;
+            this.saveProject(copyObj);
         },
-        nameConstr: (projectName, mainObj, context) => {
-            
-            mainObj.id = ++context.projectID;
+        nameConstr (projectName, mainObj){
+            mainObj.id = this.projectID;
             mainObj.project = projectName;
             mainObj.data = [];
         },

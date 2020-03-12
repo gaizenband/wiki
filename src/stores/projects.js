@@ -2,11 +2,15 @@ export default {
     state:{
         projectData: []
     },/*Данные*/
-    mutations:{},/*Изменения данных*/
+    mutations:{
+        writeProject: (state, data) => state.projectData.push(data),
+    },/*Изменения данных*/
     actions:{
-        saveProject: () => {
-            console.log(1);
+        saveProject: (ctx, project) => {
+            ctx.commit('writeProject', project);
         },
     },/*Другие операции*/
-    getters:{},/*Передача в компонент*/
+    getters:{
+        projectData: state => state.projectData
+    },/*Передача в компонент*/
 }
