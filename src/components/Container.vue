@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-5" id="page">
-        <ProjectBar v-for="(project, index) in projectData" :key='index' :ProjectName='projectData[index].project'></ProjectBar>
+        <ProjectBar v-for="(project, index) in projectData" :key='index' :ProjectName='projectData[index].project' :id="projectData[index].id"></ProjectBar>
         <AddButton @open='dialogWindow($event)'/>
         <DialogNewProj @close='dialogWindow($event)' @save='dialogWindow'/>       
     </div>
@@ -58,9 +58,10 @@ export default {
             let copyObj = Object.assign({},this.project);
 
             this.saveProject(copyObj);
+            console.log(this.projectData);
         },
         nameConstr (projectName, mainObj){
-            mainObj.id = this.projectID;
+            mainObj.id = ++this.projectID;
             mainObj.project = projectName;
             mainObj.data = [];
         },
