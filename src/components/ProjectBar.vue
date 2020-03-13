@@ -4,9 +4,10 @@
                 {{ProjectName}}
             </h5>
             <div class="card-body  d-flex justify-content-around flex-column">
-                <div class="subject" v-for="(project, index) in projectData.data" :key='index'>
-                    <div class="topic mb-5" ></div>
-                    <div class="info"></div>
+                <div class="subject h-2" v-for="(topicData, index) in projectData[0].data" :key='index'>
+                    <h6 class="topic" >{{topicData.topic}}</h6>
+                    <div class="line"></div>
+                    <p class="info">{{topicData.info}}</p>
                 </div>
                 <button class="card-body btn btn-primary p-3" style="width: 30%" @click="addTopic()">Add</button>
             </div>
@@ -30,7 +31,7 @@ export default {
         AddTopicWindow,
     },
     name: 'ProjectBar',
-    props: ['ProjectName','id'],
+    props: ['ProjectName','id','topic','info'],
 
     computed: {
       ...mapGetters(getters),
@@ -38,21 +39,24 @@ export default {
     methods: {
         ...mapActions(actions),
         addTopic() {
-            let Topic = this._vnode.children[this._vnode.children.length - 1].elm;
-            return Topic.style.display = "block";
+            let topic = this._vnode.children[this._vnode.children.length - 1].elm;
+            return topic.style.display = "block";
         },
         closeDialog() {
-            let Topic = this._vnode.children[this._vnode.children.length - 1].elm;
-            return Topic.style.display = "none";
+            let topic = this._vnode.children[this._vnode.children.length - 1].elm;
+            return topic.style.display = "none";
         },
-        saveTopic(projectTopic, projectInfo) {
-            console.log(projectTopic + ' ' + projectInfo)
+        saveTopic(data) {
+            console.log(data)
             console.log(this.id);
-            let id = this.id;
-
-            this.sendTopic(id, projectTopic, projectInfo);
-
-            // this.closeDialog();
+            data.id = this.id;
+            
+            if (data.topic) {
+                this.sendTopic(data);
+                this.closeDialog();
+            } else {
+                alert('Set topic title')
+            }
         },
     },
 }
@@ -65,7 +69,7 @@ export default {
 </style>
 
 <style>
-    .topic {
+    .topicAdding {
         display: none; /* Hidden by default */
         position: fixed; /* Stay in place */
         z-index: 1; /* Sit on top */
@@ -106,5 +110,13 @@ export default {
         color: #000;
         text-decoration: none;
         cursor: pointer;
-    }    
+    }  
+    .line {
+        border-bottom: 1px solid black;
+        margin: 10px 0 0 ;
+    }  
+    
+    .info {
+        margin-bottom: 15px;
+    }
 </style>

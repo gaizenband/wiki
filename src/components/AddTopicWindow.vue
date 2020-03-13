@@ -1,5 +1,5 @@
 <template>
-    <div class="topic" ref='modal'>
+    <div class="topicAdding" ref='modal'>
         <div class="modal-content">
             <span class="aclose" @click='closeWindow($event)' data-operation="close">&times;</span>
             <input type="text" v-model='projectTopic' class='input' placeholder="Title">
@@ -24,7 +24,11 @@ export default {
         },
         save(e, projectTopic, projectInfo) {
             console.log(projectTopic + ' ' + projectInfo)
-            this.$emit('submit', projectTopic, projectInfo)
+            const data = {
+                topic : projectTopic,
+                info: projectInfo
+            }
+            this.$emit('submit', data)
         }
     }
 }
