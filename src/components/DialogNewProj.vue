@@ -31,7 +31,6 @@ export default {
     data: function() {
         return {
             projectName: '',
-            projects: [],
             projectID: 0,
             };
         },
