@@ -11,7 +11,6 @@ export default {
             ctx.commit('writeProject', project);
         },
         sendTopic: (ctx, data) => {
-            console.log(data);
             ctx.commit('writeTopic', data)
         },
     },/*Другие операции*/

@@ -42,9 +42,9 @@ export default {
         }),
     methods: {
         ...mapActions(actions),
-        createElement: async function () {
+        createElement: function () {
             this.project.id = this.idSequence;
-            await this.saveProject(this.project);
+            this.saveProject(this.project);
             this.project = Object.assign({}, this.defaultProject);
         },
         dialogWindow(event) {
