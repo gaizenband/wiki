@@ -4,7 +4,7 @@ export default {
     },/*Данные*/
     mutations:{
         writeProject: (state, data) => state.projectData.push(data),
-        writeTopic: (state, data) => state.projectData.find(x=>x.id === data.id).data.push({topic: data.topic, info: data.info})/* + console.log(state.projectData.find(x=>x.id === id))*/,
+        writeTopic: (state, data) => state.projectData.find(x=>x.id === data.id).data.push({topic: data.topic, info: data.info}),
     },/*Изменения данных*/
     actions:{
         saveProject: (ctx, project) => {

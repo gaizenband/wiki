@@ -1,7 +1,7 @@
 <template>
     <div class="card mb-5" v-bind:id="id">
             <h5 class="card-header text-center">
-                {{ProjectName}} +  {{id}}
+                {{ProjectName}} + {{id}}
             </h5>
             <div class="card-body  d-flex justify-content-around flex-column">
                 <div class="subject h-2" >
