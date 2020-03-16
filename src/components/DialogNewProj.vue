@@ -42,9 +42,8 @@ export default {
             this.project = projectName;
             this.data = [];
         },
-        createElement: function (projName, id) {
-            let copyObj = new this.nameConstr(projName, id);
-            this.saveProject(copyObj);
+        createElement: function (projName, id) {           
+            this.saveProject(new this.nameConstr(projName, id));
             console.log(this.projectData);
         },
         dialogWindow(event, project) {  
