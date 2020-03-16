@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-5" id="page">
-        <ProjectBar v-for="(project, index) in projectData" :key='index' :ProjectName='projectData[index].project' :id="projectData[index].id"></ProjectBar>
+        <ProjectBar v-for="(project, index) in projectData" :key='index' :ProjectName='projectData[index]' :id="projectData[index].id"></ProjectBar>
         <AddButton @open='dialogWindow($event)'/>
         <DialogNewProj @close='dialogWindow($event)' @save='dialogWindow'/>       
     </div>

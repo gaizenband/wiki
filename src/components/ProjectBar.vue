@@ -1,15 +1,23 @@
 <template>
     <div class="card mb-5" v-bind:id="id">
             <h5 class="card-header text-center">
-                {{ProjectName}}
+                {{ProjectName}} +  {{id}}
             </h5>
             <div class="card-body  d-flex justify-content-around flex-column">
-                <div class="subject h-2" v-for="(topicData, index) in projectData[0].data" :key='index'>
-                    <h6 class="topic" >{{topicData.topic}}</h6>
-                    <div class="line"></div>
-                    <p class="info">{{topicData.info}}</p>
+                <div class="subject h-2" >
+                    <div class="more" v-bind:id="'more_' + id">
+                        <button type="button" class="btn btn-primary btn-lg btn-block" @click="openTopics(id)">Open</button>
+                    </div>
+                    <div class="topics" v-bind:id="'topics_' + id">
+                        <div v-for="(topicData, index) in projectData.find(x=>x.id = id).data" :key='index'>
+                            <h6 class="topic" >{{topicData.topic}}</h6>
+                            <div class="line"></div>
+                            <p class="info">{{topicData.info}}</p>
+                        </div>
+                        <button class="card-body btn btn-primary p-3" style="width: 30%" @click="addTopic()">Add</button>
+                    </div>
                 </div>
-                <button class="card-body btn btn-primary p-3" style="width: 30%" @click="addTopic()">Add</button>
+                
             </div>
             <div class="card-body  d-flex justify-content-around bg-light" style="padding: 12px;">
                 <a href="#" ><i class="fa fa-pen fa-2x"></i></a>
@@ -58,6 +66,15 @@ export default {
                 alert('Set topic title')
             }
         },
+        openTopics(id) {
+            const topics = document.querySelector('#topics_' + id);
+            const more = document.querySelector('#more_' + id);
+
+            console.log(topics)
+
+            topics.style.display = 'block';
+            more.style.display = 'none';
+        }
     },
 }
 </script>
@@ -118,5 +135,16 @@ export default {
     
     .info {
         margin-bottom: 15px;
+    }
+
+    .topics {
+        display: none;
+        padding: 5px;
+        margin-top: 5px;
+        outline: none;  
+    }
+
+    .more {
+        display: block;
     }
 </style>
