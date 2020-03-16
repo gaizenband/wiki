@@ -4,8 +4,8 @@
         <div class="modal" ref='modal'>
             <div class="modal-content">
                 <span class="aclose" @click='dialogWindow($event)' data-operation="close">&times;</span>
-                <input type="text" v-model='projectName' @keyup.enter='dialogWindow($event,projectName)' class='input' placeholder="Name of project" data-operation="save">
-                <button @click='dialogWindow($event,projectName)' class="btn btn-primary" data-operation="save">Go somewhere</button>
+                <input type="text" v-model='project.name' @keyup.enter='dialogWindow($event)' class='input' placeholder="Name of project" data-operation="save">
+                <button @click='dialogWindow($event)' class="btn btn-primary" data-operation="save">Go somewhere</button>
             </div>
         </div>
     </div>
@@ -28,29 +28,20 @@ export default {
     computed: {
       ...mapGetters(getters),
     },
-    data: function() {
-        return {
-            projectName: '',
-            projects: [],
-            projectID: 0,
-            };
-        },
+    data: () => ({
+         project : {
+            name: '',
+            data: [],
+            }
+        }),
     methods: {
         ...mapActions(actions),
-        nameConstr (projectName, id){
-            this.id = id;
-            this.project = projectName;
-            this.data = [];
+        createElement: function () {
+            this.saveProject(this.project);
         },
-        createElement: function (projName, id) {           
-            this.saveProject(new this.nameConstr(projName, id));
-            console.log(this.projectData);
-        },
-        dialogWindow(event, project) {  
+        dialogWindow(event) {
             let vNode = this._vnode.children;
-            console.log(vNode);
             const modal = vNode[vNode.length - 1].elm;
-            console.log(modal);
             const action = event.target.dataset.operation;
 
             switch (action) {
@@ -61,13 +52,12 @@ export default {
                     return modal.style.display = "none";
                 
                 case 'save':              
-                    if (!project) {
+                    if (!this.project.name) {
                         alert('Input project name')
                         return;
                     }
             }
-            let id = project + '_' + ++this.projectID;
-            this.createElement(project, id);
+            this.createElement();
             return modal.style.display = "none";                   
         },
     }

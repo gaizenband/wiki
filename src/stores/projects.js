@@ -16,6 +16,7 @@ export default {
         },
     },/*Другие операции*/
     getters:{
-        projectData: state => state.projectData
+        projectData: state => state.projectData,
+        // idSequence: state => state.projectData[state.projectData.length -1].id + 1,
     },/*Передача в компонент*/
 } 
