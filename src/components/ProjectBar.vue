@@ -1,7 +1,7 @@
 <template>
     <div class="card mb-5" v-bind:id="id">
             <h5 class="card-header text-center">
-                {{ProjectName}} + {{id}}
+                {{project.name}} + {{project.id}}
             </h5>
             <div class="card-body  d-flex justify-content-around flex-column">
                 <div class="subject h-2" >
@@ -9,11 +9,11 @@
                         <button type="button" class="btn btn-primary btn-lg btn-block" @click="openTopics(id)">Open</button>
                     </div>
                     <div class="topics" v-bind:id="'topics_' + id">
-                        <div v-for="(topicData, index) in projectData.find(x=>x.id = id).data" :key='index'>
-                            <h6 class="topic" >{{topicData.topic}}</h6>
-                            <div class="line"></div>
-                            <p class="info">{{topicData.info}}</p>
-                        </div>
+<!--                        <div v-for="(topicData, index) in projectData.find(x=>x.id = id).data" :key='index'>-->
+<!--                            <h6 class="topic" >{{topicData.topic}}</h6>-->
+<!--                            <div class="line"></div>-->
+<!--                            <p class="info">{{topicData.info}}</p>-->
+<!--                        </div>-->
                         <button class="card-body btn btn-primary p-3" style="width: 30%" @click="addTopic()">Add</button>
                     </div>
                 </div>
@@ -29,9 +29,8 @@
 
 <script>
 import AddTopicWindow from './AddTopicWindow';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
-const getters = ['projectData'];
 const actions = ['sendTopic'];
 
 export default {
@@ -39,11 +38,7 @@ export default {
         AddTopicWindow,
     },
     name: 'ProjectBar',
-    props: ['ProjectName','id','topic','info'],
-
-    computed: {
-      ...mapGetters(getters),
-    },
+    props: ['project'],
     methods: {
         ...mapActions(actions),
         addTopic() {

@@ -18,7 +18,7 @@ import AddButton from './AddButton';
 import { mapActions, mapGetters } from 'vuex';
 
 const actions = ['saveProject'];
-const getters = ['projectData'];
+const getters = ['projectData', 'idSequence'];
 
 export default {
     name: 'DialogNewProj',
@@ -30,14 +30,22 @@ export default {
     },
     data: () => ({
          project : {
-            name: '',
-            data: [],
-            }
+             name: '',
+             data: [],
+             id: null,
+         },
+        defaultProject: {
+             name: '',
+             data: [],
+             id: null,
+        }
         }),
     methods: {
         ...mapActions(actions),
-        createElement: function () {
-            this.saveProject(this.project);
+        createElement: async function () {
+            this.project.id = this.idSequence;
+            await this.saveProject(this.project);
+            this.project = Object.assign({}, this.defaultProject);
         },
         dialogWindow(event) {
             let vNode = this._vnode.children;

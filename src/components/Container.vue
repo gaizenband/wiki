@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-5" id="page">
-        <ProjectBar v-for="(project, index) in projectData" :key='index' :ProjectName='projectData[index].project' :id="projectData[index].id"></ProjectBar>       
+        <ProjectBar v-for="(project, k) in projectData" v-bind:key="k" :project="project"></ProjectBar>
         <DialogNewProj />       
     </div>
 </template>
@@ -17,12 +17,6 @@ export default {
     components: {
         DialogNewProj,
         ProjectBar
-    },
-    data: function() {
-        return {
-            projectID: 0,
-            project: {},
-        };
     },
     computed: {
       ...mapGetters(getters),
