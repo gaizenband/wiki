@@ -1,8 +1,9 @@
 <template>
     <div class="card mb-5" v-bind:id="project.id">
-            <h5 class="card-header text-center">
-                {{project.name}}
-            </h5>
+            <div class="card-header text-left">
+                <h5 class="projectName">{{project.name}}</h5>
+                <a href="#" ><i class="text-right fa fa-pen fa-2x" @click="editProject(project.name, project.id)"></i></a>
+            </div>
             <div class="card-body  d-flex justify-content-around flex-column">
                 <div class="subject h-2" >
                     <div class="more" v-bind:id="'more_' + project.id">
@@ -14,14 +15,13 @@
                            <div class="line"></div>
                            <p class="info">{{topicData.info}}</p>
                         </div>
-                        <button class="card-body btn btn-primary p-3" style="width: 30%" @click="addTopic()">Add</button>
+                        <AddTopic @addTopic='addTopic'/>
+                        <CloseProjectData @closeTopics="closeTopics(project.id)"/>
                     </div>
-                </div>
-                
+                </div>                
             </div>
             <div class="card-body  d-flex justify-content-around bg-light" style="padding: 12px;">
-                <a href="#" ><i class="fa fa-pen fa-2x"></i></a>
-                <a href="#" ><i class="fa fa-trash fa-2x" @click="deleteProject()"></i></a>
+                <a href="#" ><i class="fa fa-trash fa-2x" @click="killProject(project.id)"></i></a>
             </div>
             <AddTopicWindow @close='closeDialog' @submit='saveTopic'/>
         </div>
@@ -29,13 +29,17 @@
 
 <script>
 import AddTopicWindow from './AddTopicWindow';
+import AddTopic from './AddTopic';
+import CloseProjectData from './CloseProjectData';
 import { mapActions } from 'vuex';
 
-const actions = ['sendTopic'];
+const actions = ['sendTopic', 'deleteProject'];
 
 export default {
     components: {
         AddTopicWindow,
+        CloseProjectData,
+        AddTopic,
     },
     name: 'ProjectBar',
     props: ['project'],
@@ -65,6 +69,23 @@ export default {
 
             topics.style.display = 'block';
             more.style.display = 'none';
+        },
+        closeTopics(id) {
+            const topics = document.querySelector('#topics_' + id);
+            const more = document.querySelector('#more_' + id);
+
+            topics.style.display = 'none';
+            more.style.display = 'block';
+        },
+        killProject(id) {
+            if (confirm('Are you sure?')) {
+                this.deleteProject(id);
+            } else {
+                return;
+            }
+        },
+        editProject (name, id) {
+          this.$emit('edit', name, id);
         }
     },
 }
@@ -137,5 +158,16 @@ export default {
 
     .more {
         display: block;
+    }
+
+    .card-header {
+        display:flex; 
+        flex-direction: row; 
+        justify-content: space-between
+    }
+
+    .projectName {
+        margin: 0; 
+        line-height: 1.5;  
     }
 </style>
