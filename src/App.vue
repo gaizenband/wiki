@@ -10,23 +10,23 @@
 
 <script>
 //Block of bootstrap import
-import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css';
 
 //Block of fontawesome import
-import '@fortawesome/fontawesome-free/css/all.min.css'
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
 //Components import
-import MainBar from './components/MainBar'
-import Container from './components/Container'
+import MainBar from './components/MainBar';
+import Container from './components/Container';
 
 export default {
-  name: 'App',
-  components: {
-    MainBar,
-    Container,   
-  }
-}
+    name: 'App',
+    components: {
+        MainBar,
+        Container,   
+    },
+};
 </script>
 
 <style>

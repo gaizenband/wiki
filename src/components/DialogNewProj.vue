@@ -20,20 +20,18 @@ const getters = ['idSequence'];
 export default {
     name: 'DialogNewProj',
     computed: {
-      ...mapGetters(getters),
+        ...mapGetters(getters),
     },
     data: () => ({
-         project : {
-             name: '',
-             data: [],
-             id: null,
-         },
+        project : {
+            name: '',
+            id: null,
+        },
         defaultProject: {
-             name: '',
-             data: [],
-             id: null,
-        }
-        }),
+            name: '',
+            id: null,
+        },
+    }),
     methods: {
         ...mapActions(actions),
         createElement: function () {
@@ -47,20 +45,20 @@ export default {
             const action = event.target.dataset.operation;
 
             switch (action) {
-                case 'close':
-                    return modal.style.display = "none";
+            case 'close':
+                return modal.style.display = "none";
                 
-                case 'save':              
-                    if (!this.project.name) {
-                        alert('Input project name')
-                        return;
-                    }
+            case 'save':              
+                if (!this.project.name) {
+                    alert('Input project name');
+                    return;
+                }
             }
             this.createElement();
             return modal.style.display = "none";                   
         },
-    }
-}
+    },
+};
 </script>
 
 <style>

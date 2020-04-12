@@ -2,7 +2,7 @@
     <div class="card mb-5" v-bind:id="project.id">
             <div class="card-header text-left">
                 <h5 class="projectName">{{project.name}}</h5>
-                <a href="#" ><i class="text-right fa fa-pen fa-2x" @click="editProject(project.name, project.id)"></i></a>
+                <a href="#" ><i class="text-right fa fa-pen fa-2x" @click="editProject(project.id)"></i></a>
             </div>
             <div class="card-body  d-flex justify-content-around flex-column">
                 <div class="subject h-2" >
@@ -10,10 +10,11 @@
                         <button type="button" class="btn btn-primary btn-lg btn-block" @click="openTopics(project.id)">Open</button>
                     </div>
                     <div class="topics" v-bind:id="'topics_' + project.id">
-                        <div v-for="(topicData, index) in project.data" :key='index'>
+                        <div v-for="(topicData, index) in projectContent.filter(x => x.project_id == project.id)" :key='index'>
                            <h6 class="topic" >{{topicData.topic}}</h6>
+                           <a href="#" ><i class="fa fa-pen float-right" @click="editInfo(topicData.project_id, topicData.topic)"></i></a>
                            <div class="line"></div>
-                           <p class="info">{{topicData.info}}</p>
+                           <pre class="info">{{topicData.info}}</pre>
                         </div>
                         <AddTopic @addTopic='addTopic'/>
                         <CloseProjectData @closeTopics="closeTopics(project.id)"/>
@@ -31,15 +32,19 @@
 import AddTopicWindow from './AddTopicWindow';
 import AddTopic from './AddTopic';
 import CloseProjectData from './CloseProjectData';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 const actions = ['sendTopic', 'deleteProject'];
+const getters = ['projectContent'];
 
 export default {
     components: {
         AddTopicWindow,
         CloseProjectData,
         AddTopic,
+    },
+    computed: {
+        ...mapGetters(getters),
     },
     name: 'ProjectBar',
     props: ['project'],
@@ -50,17 +55,20 @@ export default {
             return topic.style.display = "block";
         },
         closeDialog() {
-            let topic = this._vnode.children[this._vnode.children.length - 1].elm;
-            return topic.style.display = "none";
+            let topic = [
+                this._vnode.children[this._vnode.children.length - 1].elm,
+                this._vnode.children[this._vnode.children.length - 2].elm,
+            ];
+            return topic.forEach(x => x.style.display = 'none');
         },
         saveTopic(data) {
             data.id = this._vnode.data.attrs.id;
-            
+
             if (data.topic) {
                 this.sendTopic(data);
                 this.closeDialog();
             } else {
-                alert('Set topic title')
+                alert('Set topic title');
             }
         },
         openTopics(id) {
@@ -84,11 +92,14 @@ export default {
                 return;
             }
         },
-        editProject (name, id) {
-          this.$emit('edit', name, id);
-        }
+        editProject (id) {
+            this.$emit('edit', id);
+        },
+        editInfo (id, name) {
+            this.$emit('edit', id, name);
+        },
     },
-}
+};
 </script>
 
 <style scoped>
@@ -147,6 +158,7 @@ export default {
     
     .info {
         margin-bottom: 15px;
+        white-space: pre-wrap;
     }
 
     .topics {
@@ -169,5 +181,10 @@ export default {
     .projectName {
         margin: 0; 
         line-height: 1.5;  
+    }
+
+    .topic {
+        display: inline-block;
+        margin: 0;
     }
 </style>

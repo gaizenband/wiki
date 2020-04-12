@@ -7,8 +7,8 @@ export default {
     name: 'AddTopic',
     methods: {
         addTopic() {
-            this.$emit('addTopic')
-        }
-    }
-}
+            this.$emit('addTopic');
+        },
+    },
+};
 </script>

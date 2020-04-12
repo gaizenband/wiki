@@ -21,25 +21,25 @@ const actions = ['saveProject'];
 const getters = ['projectData', 'idSequence'];
 
 export default {
-    name: 'DialogNewProj',
+    name: 'EditWindow',
     components: {
         AddButton,
     },
     computed: {
-      ...mapGetters(getters),
+        ...mapGetters(getters),
     },
     data: () => ({
-         project : {
-             name: '',
-             data: [],
-             id: null,
-         },
+        project : {
+            name: '',
+            data: [],
+            id: null,
+        },
         defaultProject: {
-             name: '',
-             data: [],
-             id: null,
-        }
-        }),
+            name: '',
+            data: [],
+            id: null,
+        },
+    }),
     methods: {
         ...mapActions(actions),
         createElement: function () {
@@ -53,23 +53,23 @@ export default {
             const action = event.target.dataset.operation;
 
             switch (action) {
-                case 'open':
-                    return modal.style.display = "block";
+            case 'open':
+                return modal.style.display = "block";
 
-                case 'close':
-                    return modal.style.display = "none";
+            case 'close':
+                return modal.style.display = "none";
                 
-                case 'save':              
-                    if (!this.project.name) {
-                        alert('Input project name')
-                        return;
-                    }
+            case 'save':              
+                if (!this.project.name) {
+                    alert('Input project name');
+                    return;
+                }
             }
             this.createElement();
             return modal.style.display = "none";                   
         },
-    }
-}
+    },
+};
 </script>
 
 <style>

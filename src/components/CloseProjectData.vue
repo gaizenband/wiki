@@ -7,8 +7,8 @@ export default {
     name: 'CloseButton',
     methods: {
         closeTopics(e) {
-            this.$emit('closeTopics', e)
-        }
-    }
-}
+            this.$emit('closeTopics', e);
+        },
+    },
+};
 </script>

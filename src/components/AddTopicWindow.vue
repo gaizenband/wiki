@@ -16,20 +16,22 @@ export default {
         return {
             projectTopic: '',
             projectInfo: '',
-            };
-        },
+        };
+    },
     methods: {
         closeWindow(e) {
-            this.$emit('close', e)
+            this.$emit('close', e);
         },
         save(e, projectTopic, projectInfo) {
-            console.log(projectTopic + ' ' + projectInfo)
+
+            console.log(projectInfo.search('\n'));
+            
             const data = {
                 topic : projectTopic,
-                info: projectInfo
-            }
-            this.$emit('submit', data)
-        }
-    }
-}
+                info: projectInfo,
+            };
+            this.$emit('submit', data);
+        },
+    },
+};
 </script>

@@ -1,25 +1,22 @@
 <template>
-    <div>
-        <div class="modal-edit-title" ref='modal-edit-title'>
-            <div class="modal-content">
-                <span class="aclose" @click='dialogWindow($event)' data-operation="close">&times;</span>
-                <input type="text" v-model='curProj.name' @keyup.enter='dialogWindow($event)' class='input' placeholder="Name of project" data-operation="save">
-                <button @click='dialogWindow($event)' class="btn btn-primary" data-operation="save">Submit</button>
-            </div>
+    <div class="topicEdit" ref='modal'>
+        <div class="modal-content">
+            <span class="aclose" @click='dialogWindow($event)' data-operation="close">&times;</span>
+            <input type="text" v-model='curProj.topic' class='input' placeholder="Title">
+            <textarea rows="10" type="textarea" v-model='curProj.info' class='input' placeholder="Information..." data-operation="save"></textarea>
+            <button @click='dialogWindow($event)' class="btn btn-primary">Save</button>
         </div>
     </div>
 </template>
 
-
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-
-const actions = ['changeProjectName'];
+const actions = ['changeProjectData'];
 const getters = ['curProj'];
 
 export default {
-    name: 'EditProjectName',
+    name: 'EditTopicWindow',
     computed: {
         ...mapGetters(getters),
     },
@@ -27,47 +24,47 @@ export default {
         project : {
             name: '',
             id: null,
+            info: '',
         },
         defaultProject: {
             name: '',
             id: null,
+            info: '',
         },
     }),
     methods: {
         ...mapActions(actions),
-        changeElement: function () {
-            console.log(this.curProj);
-            
-            this.project.name = this.curProj.name;
-            this.project.id = this.curProj.id;
-            
-            this.changeProjectName(this.project);
-            this.project = Object.assign({}, this.defaultProject);
-        },       
         dialogWindow(event) {
-            let vNode = this._vnode.children;
-            const modal = vNode[vNode.length - 1].elm;
+            const editWindow = document.querySelector('.topicEdit');
             const action = event.target.dataset.operation;
 
             switch (action) {
             case 'close':
-                return modal.style.display = "none";
-                
+                return editWindow.style.display = "none";
+            
             case 'save':              
-                if (!this.curProj.name) {
+                if (!this.curProj.info) {
                     alert('Input project name');
                     return;
                 }
             }
             this.changeElement();
-            return modal.style.display = "none";                   
+            return editWindow.style.display = "none";                   
         },
+        changeElement () {           
+            this.project.name = this.curProj.name;
+            this.project.id = this.curProj.id;
+            this.project.info = this.curProj.info;           
+            
+            this.changeProjectData(this.project);
+            this.project = Object.assign({}, this.defaultProject);
+        },  
     },
 };
 </script>
 
 <style>
-    .modal-edit-title {
+    .topicEdit {
         display: none; /* Hidden by default */
         position: fixed; /* Stay in place */
         z-index: 1; /* Sit on top */
@@ -79,5 +76,5 @@ export default {
         overflow: auto; /* Enable scroll if needed */
         background-color: rgb(0,0,0); /* Fallback color */
         background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    } 
+    }
 </style>

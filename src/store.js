@@ -1,11 +1,11 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import projects from "./stores/projects"
+import Vue from 'vue';
+import Vuex from 'vuex';
+import projects from "./stores/projects";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
         projects,
-}, 
+    }, 
 });

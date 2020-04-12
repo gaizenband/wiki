@@ -1,50 +1,50 @@
 <template>
     <div class="container mt-5" id="page">
-        <ProjectBar v-for="(project, k) in projectData" v-bind:key="k" :project="project" @edit='editProject'></ProjectBar>
-        <DialogNewProj /> 
-        <EditProjectName :pName ='pName'/>
-        <AddButton @open='dialogWindow($event)'/>
+        <ProjectBar v-for="(project, k) in projectData" v-bind:key="k" :project="project" @edit='editProject'/>
+        <DialogNewProj/>
+        <EditProjectName/>
+        <EditTopicWindow/>
     </div>
 </template>
 
 <script>
-import EditProjectName from './EditProjectName'
-import AddButton from './AddButton';
+import EditProjectName from './EditProjectName';
+import EditTopicWindow from './EditTopicWindow';
 import DialogNewProj from './DialogNewProj';
 import ProjectBar from './ProjectBar';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
-const getters = ['projectData'];
+const getters = ['projectData','curProj'];
+const actions = ['changeCurProj'];
 
 export default {
-  name: 'Container',
+    name: 'Container',
     components: {
         DialogNewProj,
         ProjectBar,
-        AddButton,
         EditProjectName,    
+        EditTopicWindow,
     },
     computed: {
-      ...mapGetters(getters),
+        ...mapGetters(getters),
     },
-    props: ['pName'],
     methods: {
-        dialogWindow() {
-            const modal = document.querySelector('.modal');
-                return modal.style.display = "block";
-        },
-        editProject(name, id) {
-            const editWindow = document.querySelector('.modal');
-            editWindow.style.display = 'block';
-            // this.pName = name;
-            this.projectData.find(x=>x.id === id).name;
+        ...mapActions(actions),
+        editProject(id, name) {
+            if (!name) {
+                const editWindow = document.querySelector('.modal-edit-title');
+                editWindow.style.display = 'block';
+                
+                this.changeCurProj(id);
+            } else {
+                const editWindow = document.querySelector('.topicEdit');
+                editWindow.style.display = 'block';
 
-            console.log(id);
-            console.log(this.projectData.find(x=>x.id === id).name);
-            
+                this.changeCurProj({id: id, name: name});
+            }
         },
-    }
-}
+    },
+};
 </script>
 
 <style>
