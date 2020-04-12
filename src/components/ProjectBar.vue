@@ -62,7 +62,7 @@ export default {
             return topic.forEach(x => x.style.display = 'none');
         },
         saveTopic(data) {
-            data.id = this._vnode.data.attrs.id;
+            data.id = this.project.id;
 
             if (data.topic) {
                 this.sendTopic(data);

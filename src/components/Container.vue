@@ -1,16 +1,14 @@
 <template>
     <div class="container mt-5" id="page">
         <ProjectBar v-for="(project, k) in projectData" v-bind:key="k" :project="project" @edit='editProject'/>
-        <DialogNewProj/>
-        <EditProjectName/>
-        <EditTopicWindow/>
+        <EditProjectName v-if="editNamePopup" @close='closeNamePopup'/>
+        <EditTopicWindow v-if="editTopicPopup" @close='closeTopicPopup'/>
     </div>
 </template>
 
 <script>
 import EditProjectName from './EditProjectName';
 import EditTopicWindow from './EditTopicWindow';
-import DialogNewProj from './DialogNewProj';
 import ProjectBar from './ProjectBar';
 import { mapGetters, mapActions } from 'vuex';
 
@@ -20,11 +18,14 @@ const actions = ['changeCurProj'];
 export default {
     name: 'Container',
     components: {
-        DialogNewProj,
         ProjectBar,
         EditProjectName,    
         EditTopicWindow,
     },
+    data: () => ({
+        editNamePopup: false,
+        editTopicPopup: false,
+    }),
     computed: {
         ...mapGetters(getters),
     },
@@ -32,16 +33,20 @@ export default {
         ...mapActions(actions),
         editProject(id, name) {
             if (!name) {
-                const editWindow = document.querySelector('.modal-edit-title');
-                editWindow.style.display = 'block';
+                this.editNamePopup = true;
                 
                 this.changeCurProj(id);
             } else {
-                const editWindow = document.querySelector('.topicEdit');
-                editWindow.style.display = 'block';
+                this.editTopicPopup = true;
 
                 this.changeCurProj({id: id, name: name});
             }
+        },
+        closeNamePopup() {
+            this.editNamePopup = false;
+        },
+        closeTopicPopup() {
+            this.editTopicPopup = false;
         },
     },
 };
@@ -49,7 +54,7 @@ export default {
 
 <style>
     .modal {
-        display: none; /* Hidden by default */
+        display: block; /* Hidden by default */
         position: fixed; /* Stay in place */
         z-index: 1; /* Sit on top */
         padding-top: 100px; /* Location of the box */

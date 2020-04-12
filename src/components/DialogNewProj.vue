@@ -2,9 +2,9 @@
     <div>
         <div class="modal" ref='modal'>
             <div class="modal-content">
-                <span class="aclose" @click='dialogWindow($event)' data-operation="close">&times;</span>
-                <input type="text" v-model='project.name' @keyup.enter='dialogWindow($event)' class='input' placeholder="Name of project" data-operation="save">
-                <button @click='dialogWindow($event)' class="btn btn-primary" data-operation="save">Submit</button>
+                <span class="aclose" @click='close()'>&times;</span>
+                <input type="text" v-model='project.name' @keyup.enter='save()' class='input' placeholder="Name of project">
+                <button @click='save()' class="btn btn-primary">Submit</button>
             </div>
         </div>
     </div>
@@ -39,26 +39,21 @@ export default {
             this.saveProject(this.project);
             this.project = Object.assign({}, this.defaultProject);
         },
-        dialogWindow(event) {
-            let vNode = this._vnode.children;
-            const modal = vNode[vNode.length - 1].elm;
-            const action = event.target.dataset.operation;
+        close() {
 
-            switch (action) {
-            case 'close':
-                return modal.style.display = "none";
-                
-            case 'save':              
-                if (!this.project.name) {
-                    alert('Input project name');
-                    return;
-                }
+            this.$emit('close');
+        },
+        save() {              
+            if (!this.project.name) {
+                alert('Input project name');
+                return;
             }
             this.createElement();
-            return modal.style.display = "none";                   
-        },
+            this.$emit('close');
+        },               
     },
 };
+
 </script>
 
 <style>

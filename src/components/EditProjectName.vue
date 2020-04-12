@@ -2,9 +2,9 @@
     <div>
         <div class="modal-edit-title" ref='modal-edit-title'>
             <div class="modal-content">
-                <span class="aclose" @click='dialogWindow($event)' data-operation="close">&times;</span>
-                <input type="text" v-model='curProj.name' @keyup.enter='dialogWindow($event)' class='input' placeholder="Name of project" data-operation="save">
-                <button @click='dialogWindow($event)' class="btn btn-primary" data-operation="save">Submit</button>
+                <span class="aclose" @click='close()'>&times;</span>
+                <input type="text" v-model='curProj.name' @keyup.enter='save()' class='input' placeholder="Name of project">
+                <button @click='save()' class="btn btn-primary">Submit</button>
             </div>
         </div>
     </div>
@@ -44,23 +44,18 @@ export default {
             this.changeProjectName(this.project);
             this.project = Object.assign({}, this.defaultProject);
         },       
-        dialogWindow(event) {
-            let vNode = this._vnode.children;
-            const modal = vNode[vNode.length - 1].elm;
-            const action = event.target.dataset.operation;
 
-            switch (action) {
-            case 'close':
-                return modal.style.display = "none";
-                
-            case 'save':              
-                if (!this.curProj.name) {
-                    alert('Input project name');
-                    return;
-                }
+        close() {
+            this.$emit('close');
+        },
+        save() {
+            if (!this.curProj.name) {
+                alert('Input project name');
+                return;
             }
+            
             this.changeElement();
-            return modal.style.display = "none";                   
+            this.$emit('close');
         },
     },
 };
@@ -68,7 +63,7 @@ export default {
 
 <style>
     .modal-edit-title {
-        display: none; /* Hidden by default */
+        display: block; /* Hidden by default */
         position: fixed; /* Stay in place */
         z-index: 1; /* Sit on top */
         padding-top: 100px; /* Location of the box */
