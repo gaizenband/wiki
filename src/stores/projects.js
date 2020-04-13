@@ -14,7 +14,6 @@ export default {
         changeProjectName: (state, data) => state.projectData.find(x=>x.id === data.id).name = data.name,
         changeCurProject: (state, data) => (state.curProj = data),
         changeProjectData: (state, data) => {
-            console.log(data);
             const proj = state.projectContent.find(x=>x.project_id === data.id && x.topic === state.curProj.topic); 
             
             proj.topic = data.name;

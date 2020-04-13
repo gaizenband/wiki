@@ -35,9 +35,7 @@ export default {
     }),
     methods: {
         ...mapActions(actions),
-        changeElement: function () {
-            console.log(this.curProj);
-            
+        changeElement: function () {            
             this.project.name = this.curProj.name;
             this.project.id = this.curProj.id;
             
@@ -53,7 +51,7 @@ export default {
                 alert('Input project name');
                 return;
             }
-            
+                        
             this.changeElement();
             this.$emit('close');
         },

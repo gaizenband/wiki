@@ -33,12 +33,10 @@ export default {
         ...mapActions(actions),
         editProject(id, name) {
             if (!name) {
-                this.editNamePopup = true;
-                
+                this.editNamePopup = true;           
                 this.changeCurProj(id);
             } else {
                 this.editTopicPopup = true;
-
                 this.changeCurProj({id: id, name: name});
             }
         },

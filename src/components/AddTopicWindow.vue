@@ -20,10 +20,7 @@ export default {
         closeWindow() {
             this.$emit('close');
         },
-        save(projectTopic, projectInfo) {
-
-            console.log(projectInfo.search('\n'));
-            
+        save(projectTopic, projectInfo) {           
             const data = {
                 topic : projectTopic,
                 info: projectInfo,

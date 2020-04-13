@@ -6,10 +6,12 @@
             </div>
             <div class="card-body  d-flex justify-content-around flex-column">
                 <div class="subject h-2" >
-                    <div class="more" v-bind:id="'more_' + project.id">
+                    <div class="more" v-bind:id="'more_' + project.id" 
+                        v-if="!(project.id === 0 && openButton.find(i => i === project.id) + 1 || openButton.find(i => i === project.id))">
                         <button type="button" class="btn btn-primary btn-lg btn-block" @click="openTopics(project.id)">Open</button>
                     </div>
-                    <div class="topics" v-bind:id="'topics_' + project.id">
+                    <div class="topics" v-bind:id="'topics_' + project.id" 
+                    v-if="(project.id === 0 && openButton.find(i => i === project.id) + 1 || openButton.find(i => i === project.id))">
                         <div v-for="(topicData, index) in projectContent.filter(x => x.project_id == project.id)" :key='index'>
                            <h6 class="topic" >{{topicData.topic}}</h6>
                            <a href="#" ><i class="fa fa-pen float-right" @click="editInfo(topicData.project_id, topicData.topic)"></i></a>
@@ -24,7 +26,7 @@
             <div class="card-body  d-flex justify-content-around bg-light" style="padding: 12px;">
                 <a href="#" ><i class="fa fa-trash fa-2x" @click="killProject(project.id)"></i></a>
             </div>
-            <AddTopicWindow @close='closeDialog' @submit='saveTopic'/>
+            <AddTopicWindow v-if="addTopicPopup" @close='closeDialog' @submit='saveTopic'/>
         </div>
 </template>
 
@@ -43,6 +45,10 @@ export default {
         CloseProjectData,
         AddTopic,
     },
+    data: () => ({
+        addTopicPopup: false,
+        openButton: [],
+    }),
     computed: {
         ...mapGetters(getters),
     },
@@ -51,15 +57,10 @@ export default {
     methods: {
         ...mapActions(actions),
         addTopic() {
-            let topic = this._vnode.children[this._vnode.children.length - 1].elm;
-            return topic.style.display = "block";
+            this.addTopicPopup = true;
         },
         closeDialog() {
-            let topic = [
-                this._vnode.children[this._vnode.children.length - 1].elm,
-                this._vnode.children[this._vnode.children.length - 2].elm,
-            ];
-            return topic.forEach(x => x.style.display = 'none');
+            this.addTopicPopup = false;
         },
         saveTopic(data) {
             data.id = this.project.id;
@@ -72,18 +73,19 @@ export default {
             }
         },
         openTopics(id) {
-            const topics = document.querySelector('#topics_' + id);
-            const more = document.querySelector('#more_' + id);
-
-            topics.style.display = 'block';
-            more.style.display = 'none';
+            if (id === 0 && this.openButton.find(i => i === id) + 1 || this.openButton.find(i => i === id)) {
+                return;
+            } else {
+                this.openButton.push(id);
+            }
         },
         closeTopics(id) {
-            const topics = document.querySelector('#topics_' + id);
-            const more = document.querySelector('#more_' + id);
-
-            topics.style.display = 'none';
-            more.style.display = 'block';
+            if (id === 0 && this.openButton.find(i => i === id) + 1 || this.openButton.find(i => i === id)) {
+                const idPosition = this.openButton.indexOf(id);
+                this.openButton.splice(idPosition,1);
+            } else {
+                return;
+            }
         },
         killProject(id) {
             if (confirm('Are you sure?')) {
@@ -102,15 +104,9 @@ export default {
 };
 </script>
 
-<style scoped>
-    button {
-        margin-top: 15px;
-    }
-</style>
-
 <style>
     .topicAdding {
-        display: none; /* Hidden by default */
+        display: block; /* Hidden by default */
         position: fixed; /* Stay in place */
         z-index: 1; /* Sit on top */
         padding-top: 100px; /* Location of the box */
@@ -162,7 +158,7 @@ export default {
     }
 
     .topics {
-        display: none;
+        display: block;
         padding: 5px;
         margin-top: 5px;
         outline: none;  
