@@ -7,11 +7,11 @@
             <div class="card-body  d-flex justify-content-around flex-column">
                 <div class="subject h-2" >
                     <div class="more" v-bind:id="'more_' + project.id" 
-                        v-if="!(project.id === 0 && openButton.find(i => i === project.id) + 1 || openButton.find(i => i === project.id))">
+                        v-if="projectShow">
                         <button type="button" class="btn btn-primary btn-lg btn-block" @click="openTopics(project.id)">Open</button>
                     </div>
                     <div class="topics" v-bind:id="'topics_' + project.id" 
-                    v-if="(project.id === 0 && openButton.find(i => i === project.id) + 1 || openButton.find(i => i === project.id))">
+                    v-if="topicShow">
                         <div v-for="(topicData, index) in projectContent.filter(x => x.project_id == project.id)" :key='index'>
                            <h6 class="topic" >{{topicData.topic}}</h6>
                            <a href="#" ><i class="fa fa-pen float-right" @click="editInfo(topicData.project_id, topicData.topic)"></i></a>
@@ -51,6 +51,22 @@ export default {
     }),
     computed: {
         ...mapGetters(getters),
+        projectShow: function() {
+            if(this.project.id === 0 && this.openButton.find(i => i === this.project.id) + 1 ||
+             this.openButton.find(i => i === this.project.id)) {
+                return false;
+            } else {
+                return true;
+            }
+        },
+        topicShow: function() {
+            if(this.project.id === 0 && this.openButton.find(i => i === this.project.id) + 1 ||
+               this.openButton.find(i => i === this.project.id)) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     name: 'ProjectBar',
     props: ['project'],
@@ -82,7 +98,7 @@ export default {
         closeTopics(id) {
             if (id === 0 && this.openButton.find(i => i === id) + 1 || this.openButton.find(i => i === id)) {
                 const idPosition = this.openButton.indexOf(id);
-                this.openButton.splice(idPosition,1);
+                this.openButton.splice(idPosition, 1);
             } else {
                 return;
             }
