@@ -13,8 +13,15 @@
                     <div class="topics" v-bind:id="'topics_' + project.id" 
                     v-if="topicShow">
                         <div v-for="(topicData, index) in projectContent.filter(x => x.project_id == project.id)" :key='index'>
-                           <h6 class="topic" >{{topicData.topic}}</h6>
-                           <a href="#" ><i class="fa fa-pen float-right" @click="editInfo(topicData.project_id, topicData.topic)"></i></a>
+                           <div class="topicButtons">
+                                <h6 class="topic" >{{topicData.topic}}</h6>   
+                                <div class="buttons">
+                                    <a href="#" class="align-self-center"><i class="fa fa-pen float-right space" 
+                                    @click="editInfo(topicData.project_id, topicData.topic)"></i></a>         
+                                    <a href="#" class="align-self-center"><i class="fa fa-trash float-right" 
+                                    @click="deleteInfo(topicData.project_id, topicData.topic)"></i></a>
+                                </div>                      
+                           </div>                    
                            <div class="line"></div>
                            <pre class="info">{{topicData.info}}</pre>
                         </div>
@@ -116,6 +123,13 @@ export default {
         editInfo (id, name) {
             this.$emit('edit', id, name);
         },
+        deleteInfo (id, name) {
+            if (confirm('Are you sure?')) {
+                this.$emit('delete', id, name);
+            } else {
+                return;
+            }    
+        },
     },
 };
 </script>
@@ -195,8 +209,22 @@ export default {
         line-height: 1.5;  
     }
 
+    .topicButtons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
     .topic {
-        display: inline-block;
         margin: 0;
+    }
+
+    .buttons {
+        align-self: center;
+        display: flex;
+    }
+
+    .space {
+        margin-right: 5px;
     }
 </style>

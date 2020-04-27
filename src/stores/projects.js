@@ -19,6 +19,12 @@ export default {
             proj.topic = data.name;
             proj.info = data.info;
         },
+        deleteTopic: (state, topic) => {
+            const curTopic = state.projectContent.find(x => x.project_id === topic.id && x.topic === topic.name);
+            const topicPosition = state.projectContent.indexOf(curTopic);
+            
+            state.projectContent.splice(topicPosition, 1);
+        },
     },/*Изменения данных*/
     actions:{
         saveProject: (ctx, project) => {
@@ -46,6 +52,9 @@ export default {
         },
         changeProjectData: (ctx, project) => {
             ctx.commit('changeProjectData', project);
+        },
+        deleteTopic: (ctx, topic) => {
+            ctx.commit('deleteTopic', topic);
         },
     },/*Другие операции*/
     getters:{

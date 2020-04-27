@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-5" id="page">
-        <ProjectBar v-for="(project, k) in projectData" v-bind:key="k" :project="project" @edit='editProject'/>
+        <ProjectBar v-for="(project, k) in projectData" v-bind:key="k" :project="project" @edit='editProject' @delete='deleteInfo'/>
         <EditProjectName v-if="editNamePopup" @close='closeNamePopup'/>
         <EditTopicWindow v-if="editTopicPopup" @close='closeTopicPopup'/>
     </div>
@@ -13,7 +13,7 @@ import ProjectBar from './ProjectBar';
 import { mapGetters, mapActions } from 'vuex';
 
 const getters = ['projectData','curProj'];
-const actions = ['changeCurProj'];
+const actions = ['changeCurProj','deleteTopic'];
 
 export default {
     name: 'Container',
@@ -39,6 +39,9 @@ export default {
                 this.editTopicPopup = true;
                 this.changeCurProj({id: id, name: name});
             }
+        },
+        deleteInfo(id, name) {
+            this.deleteTopic({id: id, name: name});
         },
         closeNamePopup() {
             this.editNamePopup = false;
