@@ -13,7 +13,7 @@ import ProjectBar from './ProjectBar';
 import { mapGetters, mapActions } from 'vuex';
 
 const getters = ['projectData','curProj'];
-const actions = ['changeCurProj','deleteTopic'];
+const actions = ['updateProjectStore','changeCurProj','deleteTopic'];
 
 export default {
     name: 'Container',
@@ -49,6 +49,9 @@ export default {
         closeTopicPopup() {
             this.editTopicPopup = false;
         },
+    },
+    mounted() {
+        this.updateProjectStore();
     },
 };
 </script>

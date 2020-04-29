@@ -25,17 +25,15 @@ export default {
     data: () => ({
         project : {
             name: '',
-            id: null,
         },
         defaultProject: {
             name: '',
-            id: null,
         },
     }),
     methods: {
         ...mapActions(actions),
         createElement: function () {
-            this.project.id = this.idSequence;
+            console.log(this.projectData);
             this.saveProject(this.project);
             this.project = Object.assign({}, this.defaultProject);
         },

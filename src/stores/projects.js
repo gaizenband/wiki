@@ -5,13 +5,14 @@ export default {
         curProj: {},
     },/*Данные*/
     mutations:{
-        writeProject: (state, data) => state.projectData.push(data),
+        updateProjectStore: (state, data) => state.projectData = data,    
+        // writeProject: (state, data) => state.projectData.push(data),    
         writeTopic: (state, topic) => state.projectContent.push({project_id: topic.id, topic: topic.topic, info: topic.info}),
-        deleteProject: (state, id) => {
-            state.projectData.splice(state.projectData.indexOf(state.projectData.find(x=>x.id === id)),1);
-            state.projectContent.forEach(x => {if (x.project_id === id){x.project_id = undefined;}});
-        },
-        changeProjectName: (state, data) => state.projectData.find(x=>x.id === data.id).name = data.name,
+        // deleteProject: (state, id) => {
+        //     state.projectData.splice(state.projectData.indexOf(state.projectData.find(x=>x.id === id)),1);
+        //     state.projectContent.forEach(x => {if (x.project_id === id){x.project_id = undefined;}});
+        // },
+        // changeProjectName: (state, data) => state.projectData.find(x=>x.id === data.id).name = data.name,
         changeCurProject: (state, data) => (state.curProj = data),
         changeProjectData: (state, data) => {
             const proj = state.projectContent.find(x=>x.project_id === data.id && x.topic === state.curProj.topic); 
@@ -27,17 +28,39 @@ export default {
         },
     },/*Изменения данных*/
     actions:{
-        saveProject: (ctx, project) => {
-            ctx.commit('writeProject', project);
+        updateProjectStore: async(ctx) => {
+            const url = 'http://usspi.xyz:9567/api/projects';
+            const fetchUrl = await fetch(url); 
+            const response = await fetchUrl.json();
+
+            ctx.commit('updateProjectStore', response);
+        },
+        saveProject: async(ctx, project) => {
+            const url = 'http://usspi.xyz:9567/api/project/create';
+            await fetch(url, {
+                method: 'POST', 
+                body: JSON.stringify(project), 
+            });
+            ctx.dispatch('updateProjectStore');
         },
         sendTopic: (ctx, topic) => {
             ctx.commit('writeTopic', topic);
         },
-        deleteProject: (ctx, projectId) => {
-            ctx.commit('deleteProject', projectId);
+        deleteProject: async(ctx, projectId) => {
+            const url = `http://usspi.xyz:9567/api/project/delete/${projectId}`;
+            await fetch(url,{
+                method: 'DELETE',
+            });
+            ctx.dispatch('updateProjectStore');
         },
-        changeProjectName: (ctx, project) => {
-            ctx.commit('changeProjectName', project);
+        changeProjectName: async(ctx, project) => {
+            const url = `http://usspi.xyz:9567/api/project/update/${project.id}`;
+            await fetch(url, {
+                method: 'POST', 
+                body: JSON.stringify({name: project.name}), 
+            });
+
+            ctx.dispatch('updateProjectStore');
         },
         changeCurProj: (ctx, data) => {
             let proj = null;
