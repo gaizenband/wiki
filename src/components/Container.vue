@@ -1,5 +1,6 @@
 <template>
     <div class="container mt-5" id="page">
+        <LoadingSpinner v-if="loadingSpinner"/>
         <ProjectBar v-for="(project, k) in projectData" v-bind:key="k" :project="project" @edit='editProject' @delete='deleteInfo'/>
         <EditProjectName v-if="editNamePopup" @close='closeNamePopup'/>
         <EditTopicWindow v-if="editTopicPopup" @close='closeTopicPopup'/>
@@ -7,6 +8,7 @@
 </template>
 
 <script>
+import LoadingSpinner from './LoadingSpinner';
 import EditProjectName from './EditProjectName';
 import EditTopicWindow from './EditTopicWindow';
 import ProjectBar from './ProjectBar';
@@ -21,10 +23,12 @@ export default {
         ProjectBar,
         EditProjectName,    
         EditTopicWindow,
+        LoadingSpinner,
     },
     data: () => ({
         editNamePopup: false,
         editTopicPopup: false,
+        loadingSpinner: false,
     }),
     computed: {
         ...mapGetters(getters),
@@ -50,24 +54,25 @@ export default {
             this.editTopicPopup = false;
         },
     },
-    mounted() {
-        this.updateProjectStore();
+    async mounted() {
+        this.loadingSpinner = true;
+        await this.updateProjectStore(); 
+        this.loadingSpinner = false;
     },
 };
 </script>
 
 <style>
     .modal {
-        display: block; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        padding-top: 100px; /* Location of the box */
+        display: block; 
+        position: fixed; 
+        z-index: 1;
+        padding-top: 100px; 
         left: 0;
         top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        width: 100%; 
+        height: 100%;
+        overflow: auto; 
+        background-color: rgba(0,0,0,0.4); 
     }
 </style>
