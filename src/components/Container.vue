@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-5" id="page">
-        <LoadingSpinner v-if="loadingSpinner"/>
+        <LoadingSpinner v-if="this.loadingStatus"/>
         <ProjectBar v-for="(project, k) in projectData" v-bind:key="k" :project="project" @edit='editProject' @delete='deleteInfo'/>
         <EditProjectName v-if="editNamePopup" @close='closeNamePopup'/>
         <EditTopicWindow v-if="editTopicPopup" @close='closeTopicPopup'/>
@@ -14,7 +14,7 @@ import EditTopicWindow from './EditTopicWindow';
 import ProjectBar from './ProjectBar';
 import { mapGetters, mapActions } from 'vuex';
 
-const getters = ['projectData','curProj'];
+const getters = ['projectData','curProj','loadingStatus'];
 const actions = ['updateProjectStore','changeCurProj','deleteTopic'];
 
 export default {
@@ -28,7 +28,6 @@ export default {
     data: () => ({
         editNamePopup: false,
         editTopicPopup: false,
-        loadingSpinner: false,
     }),
     computed: {
         ...mapGetters(getters),
@@ -55,9 +54,7 @@ export default {
         },
     },
     async mounted() {
-        this.loadingSpinner = true;
         await this.updateProjectStore(); 
-        this.loadingSpinner = false;
     },
 };
 </script>

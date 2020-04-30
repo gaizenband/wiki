@@ -3,16 +3,14 @@ export default {
         projectData: [],
         projectContent:[],
         curProj: {},
+        loadingStatus: false,
     },/*Данные*/
     mutations:{
-        updateProjectStore: (state, data) => state.projectData = data,    
-        // writeProject: (state, data) => state.projectData.push(data),    
+        updateProjectStore: (state, data) => {
+            state.projectData = data;
+            state.loadingStatus = false;
+        },   
         writeTopic: (state, topic) => state.projectContent.push({project_id: topic.id, topic: topic.topic, info: topic.info}),
-        // deleteProject: (state, id) => {
-        //     state.projectData.splice(state.projectData.indexOf(state.projectData.find(x=>x.id === id)),1);
-        //     state.projectContent.forEach(x => {if (x.project_id === id){x.project_id = undefined;}});
-        // },
-        // changeProjectName: (state, data) => state.projectData.find(x=>x.id === data.id).name = data.name,
         changeCurProject: (state, data) => (state.curProj = data),
         changeProjectData: (state, data) => {
             const proj = state.projectContent.find(x=>x.project_id === data.id && x.topic === state.curProj.topic); 
@@ -26,9 +24,14 @@ export default {
             
             state.projectContent.splice(topicPosition, 1);
         },
+        updateLoadingStatus: (state) => {
+            state.loadingStatus = true;
+        },
     },/*Изменения данных*/
     actions:{
         updateProjectStore: async(ctx) => {
+            ctx.commit('updateLoadingStatus');
+
             const url = 'http://usspi.xyz:9567/api/projects';
             const fetchUrl = await fetch(url); 
             const response = await fetchUrl.json();
@@ -85,5 +88,6 @@ export default {
         curProj: state => state.curProj,
         projectContent: state => state.projectContent,
         idSequence: state => state.projectData.length > 0 ? state.projectData[state.projectData.length -1].id + 1 : 0,
+        loadingStatus: state => state.loadingStatus,
     },/*Передача в компонент*/
 };
