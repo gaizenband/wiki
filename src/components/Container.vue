@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-5" id="page">
-        <LoadingSpinner v-if="this.loadingStatus"/>
+        <LoadingSpinner v-if="loadingStatus"/>
         <ProjectBar v-for="(project, k) in projectData" v-bind:key="k" :project="project" @edit='editProject' @delete='deleteInfo'/>
         <EditProjectName v-if="editNamePopup" @close='closeNamePopup'/>
         <EditTopicWindow v-if="editTopicPopup" @close='closeTopicPopup'/>
@@ -53,8 +53,8 @@ export default {
             this.editTopicPopup = false;
         },
     },
-    async mounted() {
-        await this.updateProjectStore(); 
+    mounted() {
+        this.updateProjectStore(); 
     },
 };
 </script>

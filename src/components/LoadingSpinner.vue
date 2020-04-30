@@ -1,5 +1,5 @@
 <template>
-    <div class="spinne">
+    <div class="spinner">
         <div class="spinner-border" role="status"></div>
     </div>
 </template>
@@ -11,8 +11,8 @@ export default {
 </script>
 
 <style>
-    .spinne {
-        display: block;
+    .spinner {
+        display: flex;
         position: fixed; 
         z-index: 1; 
         padding-top: 100px; 
@@ -22,10 +22,10 @@ export default {
         height: 100%; 
         overflow: auto; 
         background-color: rgba(0,0,0,0.4); 
+        justify-content: center;
     }    
 
     .spinner-border {
-        margin-left: 50%;
-        margin-top: 30%;
+        margin-top: 20%;
     }
 </style>
