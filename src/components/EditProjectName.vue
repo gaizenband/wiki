@@ -3,7 +3,7 @@
         <div class="modal-edit-title" ref='modal-edit-title'>
             <div class="modal-content">
                 <span class="aclose" @click='close()'>&times;</span>
-                <input type="text" v-model='curProj.name' @keyup.enter='save()' class='input' placeholder="Name of project">
+                <input type="text" v-model='curProj.name' @keyup.enter='save()' class='input' placeholder="Name of project" v-focus>
                 <button @click='save()' class="btn btn-primary">Submit</button>
             </div>
         </div>

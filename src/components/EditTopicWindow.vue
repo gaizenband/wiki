@@ -2,7 +2,7 @@
     <div class="topicEdit" ref='modal'>
         <div class="modal-content">
             <span class="aclose" @click='close()'>&times;</span>
-            <input type="text" v-model='curProj.topic' class='input' placeholder="Title">
+            <input type="text" v-model='curProj.topic' class='input' placeholder="Title" v-focus>
             <textarea rows="10" type="textarea" v-model='curProj.info' class='input' placeholder="Information..."></textarea>
             <button @click='save()' class="btn btn-primary">Save</button>
         </div>
