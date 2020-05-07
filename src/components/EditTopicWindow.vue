@@ -4,7 +4,7 @@
             <span class="aclose" @click='close()'>&times;</span>
             <input type="text" v-model='curProj.topic' class='input' placeholder="Title" v-focus>
             <textarea rows="10" type="textarea" v-model='curProj.info' class='input' placeholder="Information..."></textarea>
-            <button @click='save()' class="btn btn-primary">Save</button>
+            <button @click='save()' class="btn btn-primary" :disabled='isDisabled'>Save</button>
         </div>
     </div>
 </template>
@@ -19,6 +19,9 @@ export default {
     name: 'EditTopicWindow',
     computed: {
         ...mapGetters(getters),
+        isDisabled(){
+            return !this.curProj.topic;
+        },
     },
     data: () => ({
         project : {
@@ -38,10 +41,6 @@ export default {
             this.$emit('close');
         },
         save() {
-            if (!this.curProj.topic) {
-                alert('Input project name');
-                return;
-            }
             this.changeElement();
             this.$emit('close');
         },

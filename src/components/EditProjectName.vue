@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <span class="aclose" @click='close()'>&times;</span>
                 <input type="text" v-model='curProj.name' @keyup.enter='save()' class='input' placeholder="Name of project" v-focus>
-                <button @click='save()' class="btn btn-primary">Submit</button>
+                <button @click='save()' class="btn btn-primary" :disabled='isDisabled'>Submit</button>
             </div>
         </div>
     </div>
@@ -22,6 +22,9 @@ export default {
     name: 'EditProjectName',
     computed: {
         ...mapGetters(getters),
+        isDisabled(){
+            return !this.curProj.name;
+        },
     },
     data: () => ({
         project : {
@@ -46,12 +49,7 @@ export default {
         close() {
             this.$emit('close');
         },
-        save() {
-            if (!this.curProj.name) {
-                alert('Input project name');
-                return;
-            }
-                        
+        save() {                       
             this.changeElement();
             this.$emit('close');
         },

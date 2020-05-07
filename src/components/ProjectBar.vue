@@ -23,7 +23,7 @@
                                 </div>                      
                            </div>                    
                            <div class="line"></div>
-                           <pre class="info">{{topicData.info}}</pre>
+                           <pre class="info" v-html="topicData.info"></pre>
                         </div>
                         <AddTopic @addTopic='addTopic'/>
                         <CloseProjectData @closeTopics="closeTopics(project.id)"/>
@@ -88,12 +88,9 @@ export default {
         saveTopic(data) {
             data.id = this.project.id;
 
-            if (data.topic) {
-                this.sendTopic(data);
-                this.closeDialog();
-            } else {
-                alert('Set topic title');
-            }
+            this.sendTopic(data);
+            this.closeDialog();
+
         },
         openTopics(id) {
             if (id === 0 && this.openButton.find(i => i === id) + 1 || this.openButton.find(i => i === id)) {
